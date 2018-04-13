@@ -19,30 +19,30 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-const char *vertexShaderSource =
-"#version 330 core\n"
-"layout(location = 0) in vec3 aPos;\n"    // 位置变量的属性位置值为 0
-"layout(location = 1) in vec3 aColor;\n"  // 颜色变量的属性位置值为 1
-
-"out vec3 ourColor;\n"
-
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos,1.0);\n"
-"   ourColor = aColor;\n"
-"}\0";
-
-const char *fragmentShaderSource =
-"#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec3 ourColor;\n"
-
-//"uniform vec4 ourColor;\n"
-
-"void main()\n"
-"{\n"
-"   FragColor = vec4(ourColor,1.0);\n"
-"}\n\0";
+//const char *vertexShaderSource =
+//"#version 330 core\n"
+//"layout(location = 0) in vec3 aPos;\n"    // 位置变量的属性位置值为 0
+//"layout(location = 1) in vec3 aColor;\n"  // 颜色变量的属性位置值为 1
+//
+//"out vec3 ourColor;\n"
+//
+//"void main()\n"
+//"{\n"
+//"   gl_Position = vec4(aPos,1.0);\n"
+//"   ourColor = aColor;\n"
+//"}\0";
+//
+//const char *fragmentShaderSource =
+//"#version 330 core\n"
+//"out vec4 FragColor;\n"
+//"in vec3 ourColor;\n"
+//
+////"uniform vec4 ourColor;\n"
+//
+//"void main()\n"
+//"{\n"
+//"   FragColor = vec4(ourColor,1.0);\n"
+//"}\n\0";
 
 
 int main()
@@ -80,50 +80,51 @@ int main()
     
     //build and compile our shader program
     //------------------------------------
+    Shader ourShader("3.3.shader.vs","3.3.shader.fs");
     
-    // vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-    glCompileShader(vertexShader);
-    //check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader,GL_COMPILE_STATUS,&success);
-    if(!success)
-    {
-        glGetShaderInfoLog(vertexShader,512,NULL,infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    
-    // fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-    glCompileShader(fragmentShader);
-    //check for shader compile errors
-    glGetShaderiv(fragmentShader,GL_COMPILE_STATUS,&success);
-    if(!success)
-    {
-        glGetShaderInfoLog(fragmentShader,512,NULL,infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    
-    //link shaders
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram,vertexShader);
-    glAttachShader(shaderProgram,fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram,GL_LINK_STATUS,&success);
-    if(!success)
-    {
-        glGetProgramInfoLog(shaderProgram,512,NULL,infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
+//    // vertex shader
+//    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+//    glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
+//    glCompileShader(vertexShader);
+//    //check for shader compile errors
+//    int success;
+//    char infoLog[512];
+//    glGetShaderiv(vertexShader,GL_COMPILE_STATUS,&success);
+//    if(!success)
+//    {
+//        glGetShaderInfoLog(vertexShader,512,NULL,infoLog);
+//        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+//    }
+//
+//    // fragment shader
+//    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+//    glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
+//    glCompileShader(fragmentShader);
+//    //check for shader compile errors
+//    glGetShaderiv(fragmentShader,GL_COMPILE_STATUS,&success);
+//    if(!success)
+//    {
+//        glGetShaderInfoLog(fragmentShader,512,NULL,infoLog);
+//        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+//    }
+//
+//    //link shaders
+//    unsigned int shaderProgram = glCreateProgram();
+//    glAttachShader(shaderProgram,vertexShader);
+//    glAttachShader(shaderProgram,fragmentShader);
+//    glLinkProgram(shaderProgram);
+//    // check for linking errors
+//    glGetProgramiv(shaderProgram,GL_LINK_STATUS,&success);
+//    if(!success)
+//    {
+//        glGetProgramInfoLog(shaderProgram,512,NULL,infoLog);
+//        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+//    }
+//    glDeleteShader(vertexShader);
+//    glDeleteShader(fragmentShader);
+//
+//    // set up vertex data (and buffer(s)) and configure vertex attributes
+//    // ------------------------------------------------------------------
     float vertices[] = {
         // positions        //color
         //0.5f,  0.5f, 0.0f,  // top right
@@ -133,12 +134,12 @@ int main()
         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f      // top
     };
     
-    unsigned int indices[] =
-    {
-        // 注意索引从零开始
-        0,1,3,  //第一个三角形
-        1,2,3   //第二个三角形
-    };
+//    unsigned int indices[] =
+//    {
+//        // 注意索引从零开始
+//        0,1,3,  //第一个三角形
+//        1,2,3   //第二个三角形
+//    };
     
     unsigned int VBO,VAO,EBO;
     glGenVertexArrays(1,&VAO);
@@ -188,13 +189,16 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         // 5. 绘制代码
-        glUseProgram(shaderProgram);
+//        //glUseProgram(shaderProgram);
+//
+//
+//        // update shader uniform
+//        float timeValue = glfwGetTime();
+//        float greenValue = sin(timeValue) / 2.0f + 0.5f;
+//        int vertexColorLocation = glGetUniformLocation(shaderProgram,"ourColor");
+//        glUniform4f(vertexColorLocation,0.0f,greenValue,0.0f,1.0f);
         
-        // update shader uniform
-        float timeValue = glfwGetTime();
-        float greenValue = sin(timeValue) / 2.0f + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram,"ourColor");
-        glUniform4f(vertexColorLocation,0.0f,greenValue,0.0f,1.0f);
+        ourShader.use();
         
         // 绑定相应的 VAO
         glBindVertexArray(VAO);
